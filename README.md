@@ -149,10 +149,6 @@ The five in-corpus questions had best distances between `0.192` and `0.404`, whi
 
 ## How I Used AI
 
-I used ChatGPT while designing the custom chunking strategy. I explained that the `campus_life` corpus contained short documents averaging about 317 characters and that the starter produced one chunk per document. ChatGPT suggested paragraph-aware chunking with a target of about 450 characters and no overlap. I used that approach because it preserved natural paragraph boundaries while only splitting the few longer posts.
-
-I also used ChatGPT to review my acceptance criteria and retrieval results. I first wrote the criteria and reasons myself, then asked ChatGPT to check whether they were measurable and testable. Later, I provided the best retrieval distances for five in-corpus and five out-of-scope questions, and ChatGPT helped me confirm that the existing 0.6 cutoff sat safely between the two groups. I kept the cutoff at 0.6 rather than changing it.
-
 <!-- Two specific moments. For each: what you asked for, what came back, and
      what you changed about it.
 
@@ -162,9 +158,9 @@ I also used ChatGPT to review my acceptance criteria and retrieval results. I fi
 
      Milestone 5. -->
 
-**1.**
+**1.** I used ChatGPT while designing the custom chunking strategy. I explained that the `campus_life` corpus contained short documents averaging about 317 characters and that the starter produced one chunk per document. ChatGPT suggested paragraph-aware chunking with a target of about 450 characters and no overlap. I used that approach because it preserved natural paragraph boundaries while only splitting the few longer posts.
 
-**2.**
+**2.** I also used ChatGPT to review my acceptance criteria and retrieval results. I first wrote the criteria and reasons myself, then asked ChatGPT to check whether they were measurable and testable. Later, I provided the best retrieval distances for five in-corpus and five out-of-scope questions, and ChatGPT helped me confirm that the existing 0.6 cutoff sat safely between the two groups. I kept the cutoff at 0.6 rather than changing it.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
@@ -172,57 +168,101 @@ I also used ChatGPT to review my acceptance criteria and retrieval results. I fi
      ───────────────────────────────────────────────────────────────────────── -->
 
 ---
-
 # Unit 2
-
-<!-- These sections get ADDED to what's already above. Don't delete or rewrite
-     unit 1 — the point is that someone can see what you said before you knew
-     how it went. -->
 
 ## Run Log — Before
 
-<!-- Your five criteria, three runs each. `python run_eval.py --label before`
-     runs the questions, puts the OUT_OF_SCOPE ones through the gate, and
-     writes it all into results/ for you. Targets come from criteria.md; the
-     verdict column is your call.
-
-     Criterion 3 is measured in one deterministic pass rather than three, so
-     the same number goes in all three run columns. That's correct, not lazy.
-
-     Milestone 1. -->
-
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunks contain the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Sampled chunks contain complete thoughts and do not cut sentences in half | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 5. Answers contain the expected fact or phrase from the source | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
-<!-- Underneath, paste the REAL output for each criterion from one of your
-     runs — the actual text your system produced, not a description of it.
-     Name the file and function that produced it. -->
+### Real output from the before run
+
+Produced by `run_eval.py::main`, using retrieval from `store.py::search` and chunks from `chunker.py::split_documents`.
+
+**Criterion 1 — Retrieved chunk contains the answer**
+
+Question: What are the walk-in hours for the health centre?
+
+Retrieved sources included `health_center.txt`.
+
+```text
+The walk-in hours for the health centre are 8am to 11am (health_center.txt).
+```
+
+**Criterion 2 — Every answer names a source**
+
+Question: Does work-study income count against financial aid?
+
+```text
+No, work-study earnings do not count against your financial aid the way ordinary income does.
+
+Source: admin_campus_jobs_and_financial_aid.txt
+```
+
+**Criterion 3 — Gate stops out-of-corpus questions**
+
+Produced by `run_eval.py::check_out_of_scope`.
+
+```text
+What is the capital of Mongolia? — refused — best distance 0.825
+How do I change the oil in a diesel engine? — refused — best distance 0.934
+Who won the 1994 World Cup? — refused — best distance 0.886
+What is the recommended dosage of ibuprofen for a headache? — refused — best distance 0.844
+How do I write a for loop in Rust? — refused — best distance 0.896
+
+Gate refused 5 of 5.
+```
+
+**Criterion 4 — Sampled chunks contain complete thoughts**
+
+Produced by `chunker.py::split_documents`.
+
+Example:
+
+```text
+BIOL 160 Cell Biology — assessment
+
+Four unit tests and a cumulative final. Not curved.
+
+The unit tests come fast, roughly every three weeks; falling behind once is very hard to recover from.
+```
+
+This chunk is a complete thought and does not cut a sentence in half.
+
+**Criterion 5 — Answers contain the expected fact or phrase**
+
+Question: How many hours can I book a study room for every week?
+
+```text
+You can book a maximum of two blocks of two hours per person per week (totaling up to four hours per person).
+
+Source: study_group_rooms.txt
+```
+
+This contains the expected fact of four hours per person per week.
 
 ## Verdicts
 
-<!-- MET or MISSED for each of the five, against the target you wrote last
-     unit — not a new one. Plus a sentence on how you decided. That sentence
-     matters most where it was close.
-
-     If your target said 4 of 5 and your runs came out 4, 3, 4, that's a MISS.
-     The target has to hold, not show up occasionally.
-
-     Milestone 2. -->
-
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunks contain the answer | MET | All five questions retrieved at least one chunk containing the information needed to answer the question in all three runs, exceeding the target of 4 of 5. |
+| 2 | Every answer names a source | MET | Every generated answer named at least one source document in all three runs, meeting the 5 of 5 target. |
+| 3 | Gate stops out-of-corpus questions | MET | The relevance gate refused all five out-of-scope questions, exceeding the target of 4 of 5. |
+| 4 | Sampled chunks contain complete thoughts and do not cut sentences in half | MET | All five sampled chunks were complete thoughts with no sentence cut off at either end, exceeding the target of 4 of 5. |
+| 5 | Answers contain the expected fact or phrase from the source | MET | All five questions produced answers containing the expected fact from the source documents in all three runs, exceeding the target of 4 of 5. |
 
 ## Diagnoses
+
+No criteria were missed in the before run, so there were no failures that required a pipeline-stage diagnosis.
+
+However, the results suggest that some of my original targets were relatively safe. In particular, Criterion 1 required only 4 of 5 questions to retrieve a chunk containing the answer, but the system achieved 5 of 5 in all three runs. If I were setting a stricter version of this criterion, I would consider requiring 5 of 5.
+
+I also noticed that retrieval sometimes returned several loosely related documents along with the correct source. For example, the health-centre question retrieved `health_center.txt`, but also retrieved dining and transit documents that were not needed to answer the question. This did not cause a failure, but it suggests that retrieval precision could be improved.
 
 <!-- For each miss: which stage caused it, and how. The stage alone isn't
      enough — you need the mechanism.
@@ -246,32 +286,27 @@ I also used ChatGPT to review my acceptance criteria and retrieval results. I fi
 
 **What I changed:**
 
+I reduced the retrieval `top-k` from 5 to 3.
+
 **Why I picked it:**
 
-<!-- Connect it to a specific diagnosis above in one sentence. If you can't,
-     you picked a fix because it sounded impressive. -->
+In the before run, the correct source was consistently retrieved, but several unrelated documents were also being returned. For example, the health-centre question retrieved five documents even though only `health_center.txt` was needed, so I reduced top-k to make retrieval more focused.
 
 ### Run Log — After
 
-<!-- Same format, same five criteria, three runs each.
-     `python run_eval.py --label after` -->
-
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Sampled chunks contain complete thoughts and do not cut sentences in half | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 5. Answers contain the expected fact or phrase from the source | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
 **Did it help?**
 
-<!-- Say plainly whether it did, and how you know. If it made things worse,
-     say that — a change that backfired, honestly reported, earns full credit
-     and is more interesting than one that worked. What matters is that you can
-     tell.
+Yes. Reducing top-k from 5 to 3 kept all five criteria at MET while returning fewer unnecessary documents for each question. The correct source was still retrieved for all five test questions, and all five out-of-scope questions were still refused.
 
-     Milestone 4. -->
+The change also reduced model usage from 9,176 tokens in the before run to 6,399 tokens in the after run, a reduction of about 30%. This suggests that the system used less context while maintaining the same measured answer quality.
 
 ## What's Still Broken
 
