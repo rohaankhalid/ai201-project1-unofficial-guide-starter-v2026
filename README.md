@@ -158,9 +158,9 @@ The five in-corpus questions had best distances between `0.192` and `0.404`, whi
 
      Milestone 5. -->
 
-**1.** I used ChatGPT while designing the custom chunking strategy. I explained that the `campus_life` corpus contained short documents averaging about 317 characters and that the starter produced one chunk per document. ChatGPT suggested paragraph-aware chunking with a target of about 450 characters and no overlap. I used that approach because it preserved natural paragraph boundaries while only splitting the few longer posts.
+**1.** I used ChatGPT to help interpret the evaluation results after I ran run_eval.py. I provided the real before-run output, and it helped me compare the five criteria against the targets I had already written and identify that all five were met.
 
-**2.** I also used ChatGPT to review my acceptance criteria and retrieval results. I first wrote the criteria and reasons myself, then asked ChatGPT to check whether they were measurable and testable. Later, I provided the best retrieval distances for five in-corpus and five out-of-scope questions, and ChatGPT helped me confirm that the existing 0.6 cutoff sat safely between the two groups. I kept the cutoff at 0.6 rather than changing it.
+**2.** I also used ChatGPT to help identify a pattern in the retrieval results. The correct source was consistently present, but several unnecessary documents were also being retrieved. Based on that observation, I chose to reduce top-k from 5 to 3, then ran the full evaluation again. I used the before-and-after results to verify that all five criteria remained MET while the number of retrieved documents and total model-token usage decreased.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
