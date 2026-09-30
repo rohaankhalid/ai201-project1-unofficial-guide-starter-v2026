@@ -310,17 +310,14 @@ The change also reduced model usage from 9,176 tokens in the before run to 6,399
 
 ## What's Still Broken
 
-<!-- For each criterion still missed after your fix: what you'd do about it,
-     and why you stopped where you did.
+No acceptance criteria remained missed after the improvement. All five criteria were MET in the after run.
 
-     "I ran out of time" is fine if it's true. Pretending nothing is left is
-     not.
+However, retrieval is still not perfectly precise. Even with top-k reduced from 5 to 3, some questions still return one or two documents that are not directly needed for the answer. For example, the health-centre question still retrieved a dining document and a walking-times document alongside health_center.txt.
 
-     Milestone 5. -->
+If I continued improving the system, I would investigate hybrid retrieval using semantic search together with keyword matching, because exact names and terms may help rank the most directly relevant source higher. I stopped after the top-k improvement because the project requires one measured improvement, and that change reduced unnecessary context without hurting any of the five criteria.
 
 ## What I'd Do Differently
 
-<!-- Knowing what you know now — which of your five criteria would you write
-     differently, and why?
+I would make Criterion 1 stricter. My original target required the retrieved chunks to contain the answer for at least 4 of 5 questions, but the system achieved 5 of 5 in every run before and after the improvement.
 
-     Milestone 5. -->
+In a future version, I would set the target to 5 of 5 and also consider measuring retrieval precision, such as requiring the correct source to appear within the top three retrieved chunks. That would make the criterion more demanding and better reflect the retrieval noise I observed.
