@@ -23,8 +23,7 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+I chose 4 out of 5 because retrieval may miss the best chunk for one question even when the answer exists in the corpus. Requiring 5 out of 5 would leave no room for a single retrieval miss, while anything lower than 4 out of 5 would not show consistently useful retrieval.
 
 ---
 
@@ -33,8 +32,7 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
+I chose every answer because the system is supposed to answer from the provided text files rather than unsupported model knowledge. If an answer does not name a source, I cannot easily verify that it is grounded in the corpus.
 
 ---
 
@@ -50,13 +48,13 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
+I chose 4 out of 5 because questions outside the corpus should normally be rejected rather than answered from general model knowledge. I allow one possible miss because retrieval similarity may occasionally make an unrelated question appear relevant enough to pass the cutoff.
 
 ---
 
-## 4. Something about your chunks
+## 4. Chunks are complete enough to stand on their own
 
+At least 4 of 5 sampled chunks should contain a complete thought and should not cut a sentence in half at the beginning or end.
 <!-- YOU WRITE THIS ONE.
 
      How would you know if your chunks were the right size? Name something
@@ -72,13 +70,14 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+I chose 4 out of 5 because the campus_life documents are short and most useful information is contained within one or two sentences. A stricter 5 out of 5 target may be unrealistic if one chunk is split awkwardly, while anything lower than 4 out of 5 would suggest the chunking strategy is regularly losing context.
 
 
 ---
 
-## 5. Your choice
+## 5. Answers match the source documents
 
+For at least 4 of my 5 test questions, the system's answer should contain the expected fact or phrase from the source document.
 <!-- YOU WRITE THIS ONE TOO.
 
      Pick something you actually care about getting right. It could be about
@@ -90,7 +89,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+I chose 4 out of 5 because I want the system to answer most questions correctly while allowing for one retrieval or generation error. A lower target would not show reliable performance, while requiring 5 out of 5 would leave no room for a single imperfect result.
 
 
 ---
