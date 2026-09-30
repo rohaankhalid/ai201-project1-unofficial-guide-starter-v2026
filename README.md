@@ -21,6 +21,8 @@
 
 ## What This Does
 
+This project builds a retrieval-augmented question-answering system over the `campus_life` corpus. It indexes short campus-related documents, retrieves the most relevant chunks for a question, applies a relevance cutoff, and then generates an answer using only the retrieved documents. The system is designed to answer specific questions about campus services, courses, study spaces, library hours, financial aid, and similar topics while refusing questions that are outside the corpus.
+
 <!-- Three or four sentences. Which corpus you picked, and the kinds of
      questions your system answers. Write it for someone who has never seen
      this repo.
@@ -146,6 +148,10 @@ The five in-corpus questions had best distances between `0.192` and `0.404`, whi
 | How do I write a for loop in Rust? | No | 0.896 |
 
 ## How I Used AI
+
+I used ChatGPT while designing the custom chunking strategy. I explained that the `campus_life` corpus contained short documents averaging about 317 characters and that the starter produced one chunk per document. ChatGPT suggested paragraph-aware chunking with a target of about 450 characters and no overlap. I used that approach because it preserved natural paragraph boundaries while only splitting the few longer posts.
+
+I also used ChatGPT to review my acceptance criteria and retrieval results. I first wrote the criteria and reasons myself, then asked ChatGPT to check whether they were measurable and testable. Later, I provided the best retrieval distances for five in-corpus and five out-of-scope questions, and ChatGPT helped me confirm that the existing 0.6 cutoff sat safely between the two groups. I kept the cutoff at 0.6 rather than changing it.
 
 <!-- Two specific moments. For each: what you asked for, what came back, and
      what you changed about it.
