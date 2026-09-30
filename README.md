@@ -108,14 +108,18 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 <!-- One complete question and answer, pasted as text, with the source line
      visible. Milestone 4. -->
 
-**Question:**
+**Question:** "How many hours can I book a study room for every week?"
 
-**Answer:**
+**Answer:** You can book a maximum of two blocks of two hours per person per week, which totals four hours per person per week.
+
+Source: study_group_rooms.txt
+
+Sources retrieved: course_cs_340.txt, course_engl_205_workload.txt, course_stat_150_workload.txt, money_jobs.txt, study_group_rooms.txt
 
 ```
 ```
 
-**My relevance cutoff:**
+**My relevance cutoff:** 0.6
 
 <!-- The number you set in config.py, and how you got there.
 
@@ -126,9 +130,20 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 
      Milestone 4. -->
 
+The five in-corpus questions had best distances between `0.192` and `0.404`, while the five out-of-scope questions had best distances between `0.825` and `0.934`. The gap was therefore between `0.404` and `0.825`. I kept the cutoff at `0.6` because it sits safely between those two groups. With this cutoff, all five in-corpus questions were answered and all five out-of-scope questions were refused.
+
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| What are the walk-in hours for the health centre? | Yes | 0.192 |
+| What's one piece of advice for PHYS 130 Mechanics? | Yes | 0.248 |
+| How many hours can I book a study room for every week? | Yes | 0.276 |
+| What are the library hours during reading week? | Yes | 0.404 |
+| Does work-study income count against financial aid? | Yes | 0.272 |
+| What is the capital of Mongolia? | No | 0.825 |
+| How do I change the oil in a diesel engine? | No | 0.934 |
+| Who won the 1994 World Cup? | No | 0.886 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.844 |
+| How do I write a for loop in Rust? | No | 0.896 |
 
 ## How I Used AI
 
